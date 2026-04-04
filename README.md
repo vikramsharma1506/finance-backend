@@ -94,6 +94,7 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 ### Dashboard (ANALYST+)
 GET /api/dashboard/summary — Total income, expenses, net balance, category totals
+
 GET /api/dashboard/trends  — Monthly income and expense trends
 
 ## 🔑 Using the API
@@ -117,6 +118,7 @@ Authorization: Bearer <your_token_here>
 
 ## 🏗 Project Structure
 src/main/java/com/finance/finance_backend/
+
 ├── config/       Security, Jackson
 
 ├── controller/   Auth, User, FinancialRecord, Dashboard
