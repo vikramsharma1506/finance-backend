@@ -55,26 +55,42 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 ## 📡 API Endpoints
 
-### Authentication (Public)
-POST /api/auth/register — Register a new user
-POST /api/auth/login    — Login and receive JWT token
+### 🔓 Authentication — Public
 
-### Users (ADMIN only)
-GET    /api/users              — List all users
-GET    /api/users/{id}         — Get user by ID
-PUT    /api/users/{id}/role    — Update user role
-PUT    /api/users/{id}/toggle-status — Activate or deactivate user
-DELETE /api/users/{id}         — Delete user
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/register` | Register a new user account |
+| `POST` | `/api/auth/login` | Login and receive a JWT token |
 
-### Financial Records
-GET    /api/records                        — All records (VIEWER+)
-GET    /api/records?type=INCOME            — Filter by type
-GET    /api/records?category=Salary        — Filter by category
-GET    /api/records?startDate=2024-01-01&endDate=2024-03-31 — Filter by date
-GET    /api/records/{id}                   — Get by ID (VIEWER+)
-POST   /api/records                        — Create record (ADMIN)
-PUT    /api/records/{id}                   — Update record (ADMIN)
-DELETE /api/records/{id}                   — Soft-delete record (ADMIN)
+---
+
+### 👥 User Management — ADMIN only
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/users` | Get all registered users |
+| `GET` | `/api/users/{id}` | Get a specific user by ID |
+| `PUT` | `/api/users/{id}/role?role=ANALYST` | Update a user's role |
+| `PUT` | `/api/users/{id}/toggle-status` | Activate or deactivate a user |
+| `DELETE` | `/api/users/{id}` | Permanently delete a user |
+
+---
+
+### 💰 Financial Records — Role restricted
+
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| `GET` | `/api/records` | VIEWER, ANALYST, ADMIN | Get all active records |
+| `GET` | `/api/records?type=INCOME` | VIEWER, ANALYST, ADMIN | Filter by transaction type |
+| `GET` | `/api/records?category=Salary` | VIEWER, ANALYST, ADMIN | Filter by category |
+| `GET` | `/api/records?startDate=2024-01-01&endDate=2024-03-31` | VIEWER, ANALYST, ADMIN | Filter by date range |
+| `GET` | `/api/records/{id}` | VIEWER, ANALYST, ADMIN | Get a single record by ID |
+| `POST` | `/api/records` | ADMIN only | Create a new financial record |
+| `PUT` | `/api/records/{id}` | ADMIN only | Update an existing record |
+| `DELETE` | `/api/records/{id}` | ADMIN only | Soft-delete a record |
+
+---
+
 
 ### Dashboard (ANALYST+)
 GET /api/dashboard/summary — Total income, expenses, net balance, category totals
@@ -102,13 +118,21 @@ Authorization: Bearer <your_token_here>
 ## 🏗 Project Structure
 src/main/java/com/finance/finance_backend/
 ├── config/       Security, Jackson
+
 ├── controller/   Auth, User, FinancialRecord, Dashboard
+
 ├── dto/          Request/Response objects
+
 ├── entity/       User, FinancialRecord, Role, TransactionType
+
 ├── exception/    GlobalExceptionHandler
+
 ├── repository/   JPA repositories with custom queries
+
 ├── security/     JWT utilities and filters
+
 └── service/      Business logic layer
+
 
 ## 📝 Assumptions Made
 - Soft delete is used for financial records (deleted flag) to preserve audit history
