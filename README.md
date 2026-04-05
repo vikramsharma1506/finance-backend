@@ -46,16 +46,9 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 5. The server starts at: http://localhost:8080
 
-### Demo Credentials (auto-seeded on first run)
-| Username | Password | Role |
-|----------|----------|------|
-| admin | admin123 | ADMIN |
-| analyst | analyst123 | ANALYST |
-| viewer | viewer123 | VIEWER |
-
 ## 📡 API Endpoints
 
-### 🔓 Authentication — Public
+### 🔓 Authentication : Public
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -64,7 +57,7 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 ---
 
-### 👥 User Management — ADMIN only
+### 👥 User Management : ADMIN only
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -76,7 +69,7 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 ---
 
-### 💰 Financial Records — Role restricted
+### 💰 Financial Records : Role restricted
 
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
@@ -93,9 +86,9 @@ Spring Boot, MySQL, JWT Security, and Role-Based Access Control (RBAC).
 
 
 ### Dashboard (ANALYST+)
-GET /api/dashboard/summary — Total income, expenses, net balance, category totals
+GET /api/dashboard/summary : Total income, expenses, net balance, category totals
 
-GET /api/dashboard/trends  — Monthly income and expense trends
+GET /api/dashboard/trends  : Monthly income and expense trends
 
 ## 🔑 Using the API
 
