@@ -52,7 +52,10 @@ Desktop.ini
 application-local.properties
 application-prod.properties
 .env
+/src/main/resources/application.properties
+
 
 # Docker
 .dockerignore
 docker-compose.override.yml
+docker-compose.yml
