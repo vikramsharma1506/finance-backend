@@ -52,3 +52,7 @@ Desktop.ini
 application-local.properties
 application-prod.properties
 .env
+
+# Docker
+.dockerignore
+docker-compose.override.yml

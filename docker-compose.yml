@@ -1,0 +1,62 @@
+services:
+
+  # =============================================
+  # MySQL Database
+  # =============================================
+  mysql-db:
+    image: mysql:8.0
+    container_name: finance_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Ponds@1506
+      MYSQL_DATABASE: finance_db
+      MYSQL_USER: financeuser
+      MYSQL_PASSWORD: finance123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot1234"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  # =============================================
+  # Spring Boot Application
+  # =============================================
+  finance-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finance_backend
+    restart: on-failure
+    environment:
+      DATABASE_URL: jdbc:mysql://mysql-db:3306/finance_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: Ponds@1506
+      JWT_SECRET: myFinanceSecretKey2024SuperLongKeyForSecurity
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - finance-network
+
+# =============================================
+# Volumes
+# =============================================
+volumes:
+  mysql_data:
+
+# =============================================
+# Networks
+# =============================================
+networks:
+  finance-network:
+    driver: bridge
