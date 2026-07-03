@@ -49,13 +49,16 @@ Thumbs.db
 Desktop.ini
 
 ### Sensitive Config ###
-application-local.properties
+src/main/resources/application-local.properties
 application-prod.properties
+
+# Environment files — never push to GitHub
 .env
-/src/main/resources/application.properties
+.env.local
+.env.production
+
 
 
 # Docker
 .dockerignore
 docker-compose.override.yml
-docker-compose.yml
