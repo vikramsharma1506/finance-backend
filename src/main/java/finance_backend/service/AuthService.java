@@ -6,9 +6,9 @@ import finance_backend.repository.UserRepository;
 import finance_backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +19,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authManager;
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername()))
             throw new RuntimeException("Username already exists");
@@ -34,14 +35,21 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
-        return new AuthResponse(token, user.getUsername(), user.getRole().name());
+        String token = jwtUtil.generateToken(
+                user.getUsername(),
+                user.getRole().name());
+        return new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getRole().name());
     }
 
+    @Transactional
     public AuthResponse login(LoginRequest request) {
-        Authentication auth = authManager.authenticate(
+        authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(), request.getPassword()));
+                        request.getUsername(),
+                        request.getPassword()));
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -49,7 +57,12 @@ public class AuthService {
         if (!user.isActive())
             throw new RuntimeException("Account is deactivated");
 
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
-        return new AuthResponse(token, user.getUsername(), user.getRole().name());
+        String token = jwtUtil.generateToken(
+                user.getUsername(),
+                user.getRole().name());
+        return new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getRole().name());
     }
 }
